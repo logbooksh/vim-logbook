@@ -1,6 +1,7 @@
 module Logbook
-  require 'logbook/entry'
   require 'logbook/sheet'
+  require 'logbook/task'
+  require 'logbook/entry'
   require 'logbook/parser'
   require 'logbook/repository'
   require 'logbook/vim'
