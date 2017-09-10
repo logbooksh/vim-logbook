@@ -78,7 +78,7 @@ endfunction
 ruby << EOF
   begin
     require 'logbook'
-    $logbook = Logbook.new
+    $logbook = Logbook::Vim.new
   rescue LoadError
     load_path_modified = false
     ::VIM::evaluate('&runtimepath').to_s.split(',').each do |path|
