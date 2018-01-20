@@ -1,6 +1,7 @@
 require "date"
 require "time"
 require "securerandom"
+require "logbook"
 
 class Logbook::Vim
   TODO = "ToDo"
@@ -27,19 +28,27 @@ class Logbook::Vim
 
   def append_log
     new_log = "[#{log_time}]"
+
     current_buffer.append(current_buffer.count, new_log)
     current_buffer.append(current_buffer.count, "")
     current_window.cursor = [current_buffer.count, 1]
+
     Vim::command("startinsert")
   end
 
   def new_task(status = INITIAL_TASK_STATUS)
-    task = {title: "", status: status, id: generate_task_id}
-
     line = if status == INITIAL_TASK_STATUS
-      append_task(task, false)
+      task_definition = Logbook::TaskDefinition.new
+      task_definition.status = status
+      task_definition.properties = {"ID" => generate_task_id}
+
+      append_task(task_definition, false)
     else
-      append_task(task)
+      task_entry = Logbook::TaskEntry.new
+      task_entry.status = status
+      task_entry.properties = {"ID" => generate_task_id}
+
+      append_task(task_entry)
     end
 
     current_window.cursor = [line, task_title_index(current_buffer[line])]
@@ -49,7 +58,7 @@ class Logbook::Vim
   def start_current_task
     task = current_task
 
-    if task && task[:status] == TODO
+    if task && task.status == TODO
       change_current_task_status(START)
     end
   end
@@ -82,7 +91,7 @@ class Logbook::Vim
     task = current_task
 
     if task
-      task[:status] = status
+      task.status = status
       append_task(task)
       current_window.cursor = [current_buffer.count, 1]
     end
@@ -91,8 +100,8 @@ class Logbook::Vim
   private
   def append_task(task, with_log_time = true)
     prefix = with_log_time ? "[#{log_time}] " : ""
-    new_log = "#{prefix}[#{task[:status]}] #{task[:title]}"
-    tags = align_with_title(new_log) + "[ID: #{task[:id]}]"
+    new_log = "#{prefix}[#{task.status}] #{task.title}"
+    tags = align_with_title(new_log) + "[ID: #{task.properties["ID"]}]"
 
     current_buffer.append(current_buffer.count, "") if current_buffer[current_buffer.count] != ""
     starting_line_number = current_buffer.count + 1
@@ -140,11 +149,11 @@ class Logbook::Vim
 
   def current_task
     row, _ = current_window.cursor
-    current_sheet.entry_at(row)
+    current_page.entry_at(row)
   end
 
-  def current_sheet
-    contents = current_buffer.count.times.map { |i| current_buffer[i] }.join("\n")
-    Logbook::Parser.new(contents).parse
+  def current_page
+    contents = current_buffer.count.times.map { |i| current_buffer[i + 1] }.join("\n")
+    Logbook::Builder.build(contents)
   end
 end
