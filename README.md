@@ -99,8 +99,8 @@ $ bundle install
 
 ## Usage
 
-`vim-logbook` relies on file-type detection and will only work for files ending
-with either `.logbook` or `.plan`.
+`vim-logbook` relies on file-type detection and will only work for files
+with either the `.logbook` or `.plan` extension.
 
 Out of the box, `vim-logbook` provides 7 key mappings:
 
