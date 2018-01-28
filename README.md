@@ -18,7 +18,7 @@ Here is an example:
 [Project: logbook.sh]
 
 Those are page properties. They apply to the whole file and will be automatically
-merged with task properties described below.
+merged with task properties as described below.
 
 [10:00]
 
@@ -35,11 +35,11 @@ The header defines the task, giving it a status, a title and properties.
 
 Properties can either be of the form [Name: Value] or #tag.
 
-Page properties are automatically applied to task definitions and
-entries that follows them. In case of conflict between page and task properties,
-the value of task properties prevail.
+Page properties are automatically added to task definitions and
+entries that follow them. If a property is defined both for the whole page and
+a given task, the task property prevails.
 
-Following the header is a note, which is usually describing the task or
+Following the header is a note, which usually describes the task or
 activity. The note captures all text until the next task header.
 
 [10:15] [Start] Add README for vim-logbook
@@ -51,8 +51,8 @@ it is prefixed with the time at which the entry was created.
 ID is a special property used to identify entries related to the same task
 therefore it must be repeated for each entry.
 
-In essence, all task definitions and task entries related to the same task,
-taken altogether, define the task, its properties and current status.
+Taken altogether, task definitions and task entries related to the same task
+define the task, its properties and current status.
 
 [10:30] [Pause] Add README for vim-logbook
                 [ID: abcd-1234]
