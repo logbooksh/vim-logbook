@@ -40,13 +40,13 @@ class Logbook::Vim
     line = if status == INITIAL_TASK_STATUS
       task_definition = Logbook::TaskDefinition.new
       task_definition.status = status
-      task_definition.properties = {"ID" => generate_task_id}
+      task_definition.properties = {"ID" => Logbook::Property.new("ID", generate_task_id)}
 
       append_task(task_definition, false)
     else
       task_entry = Logbook::TaskEntry.new
       task_entry.status = status
-      task_entry.properties = {"ID" => generate_task_id}
+      task_entry.properties = {"ID" => Logbook::Property.new("ID", generate_task_id)}
 
       append_task(task_entry)
     end
@@ -101,7 +101,7 @@ class Logbook::Vim
   def append_task(task, with_log_time = true)
     prefix = with_log_time ? "[#{log_time}] " : ""
     new_log = "#{prefix}[#{task.status}] #{task.title}"
-    tags = align_with_title(new_log) + "[ID: #{task.properties["ID"]}]"
+    tags = align_with_title(new_log) + "[ID: #{task.properties["ID"].value}]"
 
     current_buffer.append(current_buffer.count, "") if current_buffer[current_buffer.count] != ""
     starting_line_number = current_buffer.count + 1

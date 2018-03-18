@@ -1,9 +1,9 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    logbook-ruby (0.1.4)
+    logbook-ruby (0.1.5)
       parslet (~> 1.8)
-    parslet (1.8.1)
+    parslet (1.8.2)
 
 PLATFORMS
   ruby
