@@ -44,7 +44,7 @@ class Logbook::Vim
 
       append_task(task_definition, false)
     else
-      task_entry = Logbook::TaskEntry.new
+      task_entry = Logbook::TaskEntry.new(time: log_time)
       task_entry.status = status
       task_entry.properties = {"ID" => Logbook::Property.new("ID", generate_task_id)}
 
