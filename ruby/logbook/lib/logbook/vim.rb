@@ -101,7 +101,7 @@ class Logbook::Vim
   def append_task(task, with_log_time = true)
     prefix = with_log_time ? "[#{log_time}] " : ""
     new_log = "#{prefix}[#{task.status}] #{task.title}"
-    tags = align_with_title(new_log) + "[ID: #{task.properties["ID"].value}]"
+    tags = align_with_title(new_log) + "[ID: #{task.properties["ID"]}]"
 
     current_buffer.append(current_buffer.count, "") if current_buffer[current_buffer.count] != ""
     starting_line_number = current_buffer.count + 1
